@@ -1,57 +1,57 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerHp : MonoBehaviour {
 	
-	public GameObject hpPanel;
-	public int initialHp = 10;
-	public float growInterval = 0.0f;
+	public Text hpText;
+    public GameObject returnButton;
+	public float growInterval = 5.0f;
+    public int maxHp = 10;
+
+    [SerializeField]
 	private int hp;
 	private float lastLogTime;
 
-	public void ResetHp()
-	{
-		hp = initialHp;
-		UpdateHp ();
-	}
     public void HealHp(int amount)
     {
         hp += amount;
+        if (hp > maxHp)
+            hp = maxHp;
         UpdateHp();
     }
     public void DamageHp(int amount)
     {
         hp -= amount;
-		UpdateHp ();
+        UpdateHp();
 
-		if (hp <= 0)
-		{
-			Destroy (GetComponentInParent<EnemyMove> ());
-			Destroy(GameObject.Find("Enemy Spawner"));
-		}
+        if (hp <= 0)
+        {
+            GetComponent<PlayerMove>().enabled = false;
+            var enemySpawner = GameObject.Find("Enemy Spawner");
+            enemySpawner.GetComponent<EnemySpawner>().enabled = false;
+            foreach (Transform t in enemySpawner.transform.Cast<Transform>().ToArray())
+            {
+                t.GetComponent<EnemyMove>().enabled = false;
+                t.GetComponent<EnemyExplosion>().enabled = false;
+            }
+            returnButton.SetActive(true);
+        }
     }
-
     private void UpdateHp()
     {
-		if (hpPanel.activeSelf)
-			hpPanel.transform.Find ("Hp Text").GetComponent<Text> ().text = hp.ToString ();
-
-        PlayerPrefs.SetInt("PLAYER_HP", hp);
-        PlayerPrefs.Save();
+		hpText.text = hp.ToString ();
     }
 	private void Start()
 	{
-		lastLogTime = 0.0f;
-
-		hp = PlayerPrefs.GetInt("PLAYER_HP", initialHp);
-		if (hp <= initialHp)
-			ResetHp ();
-		
-		UpdateHp ();
-	}
+        hp = maxHp;
+        lastLogTime = Time.time;
+    }
 	private void Update()
 	{
-		if (!Mathf.Approximately(growInterval, 0.0f) && Time.time - lastLogTime > growInterval)
+        if (hp <= 0)
+            enabled = false;
+		else if (!Mathf.Approximately(growInterval, 0.0f) && Time.time - lastLogTime > growInterval)
 		{
 			lastLogTime = Time.time;
 			HealHp(1);

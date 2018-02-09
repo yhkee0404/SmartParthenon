@@ -3,7 +3,7 @@
 public class PlayerMove : MonoBehaviour {
 
     public DirPad dirPad;
-    public float speed = 1.0f;
+    public float speed = 10.0f;
 
     void Start()
     {

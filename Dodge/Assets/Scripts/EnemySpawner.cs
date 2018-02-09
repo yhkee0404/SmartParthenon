@@ -14,19 +14,16 @@ public class EnemySpawner : MonoBehaviour {
 
         lastLogTime = 0.0f;
     }
-
-    // Update is called once per frame
-    void Update () {
+    private void Update () {
         if (Time.time - lastLogTime > spawnInterval)
         {
             lastLogTime = Time.time;
             Spawn();
         }
 	}
-
     private void Spawn()
     {
-        var enemy = Instantiate(enemyPrefab);
+        var enemy = Instantiate(enemyPrefab, transform);
         var theta = Random.Range(0, 2 * Mathf.PI);
         var spawnPos = spawnRadius * new Vector3(Mathf.Cos(theta), 0, Mathf.Sin(theta));
         enemy.transform.position = player.transform.position + spawnPos;

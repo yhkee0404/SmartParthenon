@@ -3,17 +3,7 @@
 public class EnemyMove : MonoBehaviour {
 
     public GameObject player;
-    public GameObject explosionPrefab;
-    public float speed;
-    public float destroyInterval;
-
-    private float lastLogTime;
-
-    private void Start()
-    {
-        lastLogTime = Time.time;
-    }
-
+    public float speed = 5.0f;
     private void Update()
     {
         var diff = player.transform.position - transform.position;

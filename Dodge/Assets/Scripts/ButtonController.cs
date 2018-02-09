@@ -1,31 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class ButtonController : MonoBehaviour {
-    public AudioSource audioSource;
-	public GameObject hpPanel;
+public class ButtonController : MonoBehaviour
+{
+
+    public AudioSource mainAudioSource;
+    public AudioSource clickAudioSource;
+    public GameObject hpPanel;
+
+    private Score score;
 
     public void OpenMainScene()
     {
+        clickAudioSource.Play();
         SceneManager.LoadScene("Main");
     }
     public void OpenSplashScene()
     {
+        clickAudioSource.Play();
+        score.SaveScore();
         SceneManager.LoadScene("Splash");
     }
     public void TogglePlaySound()
     {
-        if (audioSource.isPlaying)
-            audioSource.Stop();
+        clickAudioSource.Play();
+        if (mainAudioSource.isPlaying)
+            mainAudioSource.Pause();
         else
-            audioSource.Play();
+            mainAudioSource.Play();
     }
     public void ToggleHpPanel()
     {
-        if (hpPanel.activeSelf)
-            hpPanel.SetActive(false);
-        else
-            hpPanel.SetActive(true);
+        clickAudioSource.Play();
+        hpPanel.SetActive(!hpPanel.activeSelf);
+    }
+
+    private void Start()
+    {
+        score = GameObject.Find("Score").GetComponent<Score>();
     }
 }
