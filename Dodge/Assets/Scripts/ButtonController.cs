@@ -4,12 +4,8 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour {
     public AudioSource audioSource;
-    public GameObject hpPanel;
-    public void Start()
-    {
-        var hp = PlayerPrefs.GetInt("PLAYER_HP", 10);
-        hpPanel.GetComponent<Text>().text = hp.ToString();
-    }
+	public GameObject hpPanel;
+
     public void OpenMainScene()
     {
         SceneManager.LoadScene("Main");
@@ -30,13 +26,6 @@ public class ButtonController : MonoBehaviour {
         if (hpPanel.activeSelf)
             hpPanel.SetActive(false);
         else
-        {
             hpPanel.SetActive(true);
-        }
-    }
-    public void ResetHp()
-    {
-        var hp = PlayerPrefs.GetInt("PLAYER_HP", 10);
-        hpPanel.GetComponent<Text>().text = hp.ToString();
     }
 }

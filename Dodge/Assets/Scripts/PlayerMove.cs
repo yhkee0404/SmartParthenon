@@ -8,9 +8,9 @@ public class PlayerMove : MonoBehaviour {
     void Start()
     {
         dirPad = GameObject.Find("Dir Panel").GetComponent<DirPad>();
-}
-    // Update is called once per frame
-    void Update () {
+	}
+    void Update ()
+	{
         if (dirPad.dragging)
         {
             var dn = dirPad.dir.normalized * Time.deltaTime * speed;

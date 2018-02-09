@@ -2,20 +2,17 @@
 
 public class PlayerCollision : MonoBehaviour {
 
-    private PlayerHp playerHp;
-
-    private void Start()
-    {
-        playerHp = transform.parent.GetComponent<PlayerHp>();
-    }
+    public PlayerHp playerHp;
 
     private void OnTriggerEnter(Collider other)
     {
-        var enemy = other.transform.parent;
-        if (enemy.GetComponent<EnemyMove>())
+		var enemyMove = other.transform.parent.GetComponent<EnemyMove>();
+        if (enemyMove)
         {
             playerHp.DamageHp(1);
-            Destroy(enemy.gameObject);
+			var explosion = Instantiate (enemyMove.explosionPrefab);
+			explosion.transform.position = enemyMove.transform.position;
+			Destroy(enemyMove.gameObject);
         }
     }
 }

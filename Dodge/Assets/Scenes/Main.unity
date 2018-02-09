@@ -1662,6 +1662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83725a710a675224aa2ee74e1bed73cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHp: {fileID: 2128647288}
 --- !u!1001 &2027333909
 Prefab:
   m_ObjectHideFlags: 0
@@ -1734,7 +1735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09571e9d8ac47b45a32b3288c20e34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dirPad: {fileID: 0}
+  dirPad: {fileID: 90849579}
   speed: 10
 --- !u!4 &2128647287
 Transform:
@@ -1763,4 +1764,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d25738264a2105847b7089c12c95a7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpPanel: {fileID: 478933353}
+  initialHp: 10
   growInterval: 5

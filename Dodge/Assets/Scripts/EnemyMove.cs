@@ -6,6 +6,7 @@ public class EnemyMove : MonoBehaviour {
     public GameObject explosionPrefab;
     public float speed;
     public float destroyInterval;
+
     private float lastLogTime;
 
     private void Start()
@@ -13,18 +14,10 @@ public class EnemyMove : MonoBehaviour {
         lastLogTime = Time.time;
     }
 
-    void Update()
+    private void Update()
     {
         var diff = player.transform.position - transform.position;
         var dir = diff.normalized;
         transform.Translate(dir * Time.deltaTime * speed);
-        
-        if (Time.time - lastLogTime > destroyInterval)
-            Destroy(gameObject);
-    }
-    private void OnDestroy()
-    {
-        var explosion = Instantiate(explosionPrefab);
-        explosion.transform.position = transform.position;
     }
 }

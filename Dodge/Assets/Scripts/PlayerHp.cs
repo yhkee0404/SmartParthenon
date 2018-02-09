@@ -2,10 +2,18 @@
 using UnityEngine.UI;
 
 public class PlayerHp : MonoBehaviour {
-    private int hp;
-    private GameObject hpPanel;
-    private float lastLogTime;
-    public float growInterval;
+	
+	public GameObject hpPanel;
+	public int initialHp = 10;
+	public float growInterval = 0.0f;
+	private int hp;
+	private float lastLogTime;
+
+	public void ResetHp()
+	{
+		hp = initialHp;
+		UpdateHp ();
+	}
     public void HealHp(int amount)
     {
         hp += amount;
@@ -14,30 +22,39 @@ public class PlayerHp : MonoBehaviour {
     public void DamageHp(int amount)
     {
         hp -= amount;
-        UpdateHp();
+		UpdateHp ();
 
-        if (hp <= 0)
-            Destroy(gameObject);
+		if (hp <= 0)
+		{
+			Destroy (GetComponentInParent<EnemyMove> ());
+			Destroy(GameObject.Find("Enemy Spawner"));
+		}
     }
+
     private void UpdateHp()
     {
-        if (hpPanel.activeSelf)
-            hpPanel.GetComponentInChildren<Text>().text = hp.ToString();
+		if (hpPanel.activeSelf)
+			hpPanel.transform.Find ("Hp Text").GetComponent<Text> ().text = hp.ToString ();
 
         PlayerPrefs.SetInt("PLAYER_HP", hp);
         PlayerPrefs.Save();
     }
-    private void Start()
-    {
-        lastLogTime = 0.0f;
-    }
+	private void Start()
+	{
+		lastLogTime = 0.0f;
 
-    private void Update()
-    {
-        if (Time.time - lastLogTime > growInterval)
-        {
-            lastLogTime = Time.time;
-            HealHp(1);
-        }
-    }
+		hp = PlayerPrefs.GetInt("PLAYER_HP", initialHp);
+		if (hp <= initialHp)
+			ResetHp ();
+		
+		UpdateHp ();
+	}
+	private void Update()
+	{
+		if (!Mathf.Approximately(growInterval, 0.0f) && Time.time - lastLogTime > growInterval)
+		{
+			lastLogTime = Time.time;
+			HealHp(1);
+		}
+	}
 }
